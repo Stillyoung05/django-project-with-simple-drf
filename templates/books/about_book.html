@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<img src="{{ book.book_image.url }}" alt="">
+<p>{{ book.short_description }}</p>
+<p>{{ book.publisher }}</p>
+<p>{{ book.book_price }}</p>
+<p>{{ book.isbn }}</p>
+<p>{{ book.create_at | date:"d-M Y"}}</p>
+<a href="{% url 'update' book.pk %}">Edit Book</a>
+<a href="{% url 'delete' book.pk %}">Delete this book</a>
+
+{% endblock content %}
