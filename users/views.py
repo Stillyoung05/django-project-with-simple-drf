@@ -1,6 +1,9 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.urls import reverse_lazy
+from django.views import View
+from django.contrib.auth.views import LogoutView
 from .forms import SignUpForm,UpdateUserForm
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser
@@ -30,36 +33,44 @@ def edit_profile(request):
     return render(request,'users/editprofile.html',{'form':form})
 
 
-def sign_up_view(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('login')
-    else:
+class CustomUserSignup(View):
+    def get(self, request):
         form = SignUpForm()
-    return render(request, 'registration/signup.html', {'form': form})
+        context = {
+            'form': form,
+        }
+        return render(request, 'registration/signup.html', context)
+
+    def post(self, request):
+        form = SignUpForm(data=request.POST)
+        if form.is_valid():
+            user = form.save()  
+            login(request, user) 
+            return redirect('login')
+        
+        context = {
+            'form': form,
+        }
+        return render(request, 'registration/signup.html', context)
 
 
+class CustomUserLogin(View):
+    def get(self, request):
+        form = AuthenticationForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'registration/login.html', context)
 
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-
-        user = authenticate(request,username=username,password=password)
-        if user is not None:
-            form = login(request,user)
-            return redirect('home')
+    def post(self, request):
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
     
-    form = AuthenticationForm()
-
-    return render(request,'registration/login.html',{'form':form})
-
-def logout_view(request):
-    logout(request)
-    return redirect('login')
+            return redirect('home')
+        
+        
+class CustomLogoutView(LogoutView):
+    def get_next_page(self):
+        return reverse_lazy('login')
