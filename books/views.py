@@ -22,7 +22,7 @@ def update_book(request, pk):
     else:
         form = UpdateBookForm(instance=book_instance)
 
-    return render(request, 'books/update_book.html', {'form': form})
+    return render(request, 'books/update_book.html', {'form': form,'book':book_instance})
 
 
 def delete_book(request, pk):
