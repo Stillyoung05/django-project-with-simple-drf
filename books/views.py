@@ -1,8 +1,10 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import BooksModel,BookAuthorModel,AuthorModel,ReviewBookModel
+from .models import BooksModel
 from .forms import UpdateBookForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+@login_required
 def books_view(request):
     books = BooksModel.objects.order_by('book_name')
     context = {
@@ -10,7 +12,7 @@ def books_view(request):
     }
     return render(request,'books/book.html',context=context)
 
-
+@login_required
 def update_book(request, pk):
     book_instance = get_object_or_404(BooksModel, pk=pk)
 
@@ -24,7 +26,7 @@ def update_book(request, pk):
 
     return render(request, 'books/update_book.html', {'form': form,'book':book_instance})
 
-
+@login_required
 def delete_book(request, pk):
     book_instance = get_object_or_404(BooksModel, pk=pk)
 
@@ -34,7 +36,7 @@ def delete_book(request, pk):
 
     return render(request, 'books/delete.html', {'book': book_instance})
 
-
+@login_required
 def about_book(request,pk):
     book = BooksModel.objects.get(pk=pk)
     context = {

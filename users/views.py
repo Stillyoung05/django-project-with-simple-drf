@@ -1,19 +1,16 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth import login,authenticate,logout
+from django.contrib.auth import login,logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.urls import reverse_lazy
 from django.views import View
-from django.contrib.auth.views import LogoutView
 from .forms import SignUpForm,UpdateUserForm
 from django.contrib.auth.decorators import login_required
-from .models import CustomUser
 # Create your views here.
 
-
+@login_required
 def homepage_view(request):
     return render(request,'home.html')
 
-
+@login_required
 def profile_view(request):
     user = request.user
     context = {
@@ -31,7 +28,6 @@ def edit_profile(request):
     else:
         form = UpdateUserForm(instance=request.user)
     return render(request,'users/editprofile.html',{'form':form})
-
 
 class CustomUserSignup(View):
     def get(self, request):
@@ -71,6 +67,7 @@ class CustomUserLogin(View):
             return redirect('home')
         
         
-class CustomLogoutView(LogoutView):
-    def get_next_page(self):
-        return reverse_lazy('login')
+class CustomLogoutView(View):
+    def get(self,request):
+        logout(request)
+        return redirect('login')

@@ -1,0 +1,73 @@
+# .gitignore
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+pip-wheel-metadata/
+
+# Database
+*.sqlite3
+*.db
+
+# Media files
+media/
+
+# Static files
+staticfiles/
+
+# Secret key
+*.secret_key
+
+# Development and production environment variables
+.env
+.env.local
+.env.prod
+
+# IDE files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+
+# Log files
+*.log
+
+# Caches and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Python local build / dist directories
+build/
+dist/
+*.egg-info/
+
+# Django migrations
+*.pyc
+__pycache__/
+*.pyo
+
+# Docker Compose
+docker-compose.yml
+docker-compose.override.yml
+*.override.yml
+
+# pyenv
+.python-version
+
+# Pycache
+__pycache__/
