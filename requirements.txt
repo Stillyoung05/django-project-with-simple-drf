@@ -2,7 +2,7 @@ asgiref
 dj-database-url
 Django
 gunicorn
-packagin
+packaging
 pillow
 psycopg2
 python-dotenv
