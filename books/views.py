@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import BooksModel
-from .forms import UpdateBookForm
+from .models import BooksModel,ReviewBookModel
+from .forms import UpdateBookForm,AddCommentForm
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -39,7 +39,21 @@ def delete_book(request, pk):
 @login_required
 def about_book(request,pk):
     book = BooksModel.objects.get(pk=pk)
+    comments = ReviewBookModel.objects.all().filter(book=pk)
     context = {
         'book':book,
+        'comments':comments,
     }
     return render(request,'books/about_book.html',context=context)
+
+@login_required(login_url='login')
+def add_comment(request):
+    if request.method == 'POST':
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            form.instance.user = request.user
+            form.save()
+            return redirect('books')
+    else:
+        form = AddCommentForm()
+    return render(request,'add_comment.html',{'form':form})

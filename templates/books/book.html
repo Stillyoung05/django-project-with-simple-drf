@@ -3,7 +3,7 @@
 {% block content %}
     {% for book in books %}
     <a href="{% url 'book' book.pk %}">
-    <img src="{{ book.book_image.url }}" alt="{{book.book_name}} image">
+    <img style="height: 300px; width:300px;" src="{{ book.book_image.url }}" alt="{{book.book_name}} image">
     <h4>{{ book.book_name }}</h4>
     </a>
     <br><hr>
