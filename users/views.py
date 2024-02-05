@@ -2,13 +2,15 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import login,logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.views import View
-from .forms import SignUpForm,UpdateUserForm
+from .forms import SignUpForm, UpdateUserForm
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
-@login_required
+
+# @login_required
 def homepage_view(request):
-    return render(request,'home.html')
+    return render(request, 'home.html')
+
 
 @login_required
 def profile_view(request):
@@ -17,6 +19,7 @@ def profile_view(request):
         'user':user
     }
     return render(request,'users/profile.html',context=context)
+
 
 @login_required
 def edit_profile(request):
@@ -28,6 +31,7 @@ def edit_profile(request):
     else:
         form = UpdateUserForm(instance=request.user)
     return render(request,'users/editprofile.html',{'form':form})
+
 
 class CustomUserSignup(View):
     def get(self, request):
@@ -65,9 +69,11 @@ class CustomUserLogin(View):
             login(request, user)
     
             return redirect('home')
-        
-        
+        else:
+            return render(request, 'registration/login.html', {'form': form})
+
+
 class CustomLogoutView(View):
-    def get(self,request):
+    def get(self, request):
         logout(request)
         return redirect('login')

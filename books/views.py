@@ -56,4 +56,4 @@ def add_comment(request):
             return redirect('books')
     else:
         form = AddCommentForm()
-    return render(request,'add_comment.html',{'form':form})
+    return render(request,'books/add_comment.html',{'form':form})

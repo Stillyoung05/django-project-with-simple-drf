@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator,MaxValueValidator
 from users.models import CustomUser
 # Create your models here.
 
+
 class BooksModel(models.Model):
     book_name = models.CharField(max_length=25)
     short_description = models.TextField()
@@ -45,7 +46,7 @@ class ReviewBookModel(models.Model):
     star_given = models.IntegerField(
         default=0,
         validators=[
-            MinValueValidator(limit_value=1),
+            MinValueValidator(limit_value=0),
             MaxValueValidator(limit_value=5),
         ]
     )
